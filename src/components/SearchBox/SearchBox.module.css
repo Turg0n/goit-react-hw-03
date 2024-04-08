@@ -1,14 +1,8 @@
-.searchBar {
-    margin-bottom: 30px;
-  }
-  
-  .label {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .input {
-    margin-top: 4px;
-    padding: 4px;
-    width: 300px;
-  }
+.searchWrapper {
+  margin-bottom: 20px;
+}
+
+.searchInput {
+  display: block;
+  width: 190px;
+}

@@ -1,15 +1,9 @@
 .contactList {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-  
-  .contactListItem {
-    margin-left: auto;
-    margin-right: auto;
-  }
-  
-  .slideOut {
-    transition: transform 250ms cubic-bezier(0.4, 0, 0.2, 1);
-    transform: translateX(-300%);
-  }
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.contactListItem {
+  flex-basis: calc((100% - 12px * 3) / 4);
+}

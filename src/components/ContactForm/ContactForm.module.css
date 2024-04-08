@@ -1,57 +1,32 @@
-.form {
+.contactForm {
   display: flex;
   flex-direction: column;
-  width: 300px;
-  gap: 20px;
-  border: 1px solid black;
-  border-radius: 8px;
-  padding: 16px;
-  margin-bottom: 30px;
-  margin-top: 30px;
-}
-
-.btn {
-  display: flex;
   align-items: center;
   justify-content: center;
-  margin-left: auto;
-  margin-right: auto;
-  padding: 16px 32px;
-  color: #fff;
-  font-size: 14px;
-  font-weight: 500;
-  line-height: 1.5;
-  letter-spacing: 0.04em;
+  row-gap: 10px;
+  width: 220px;
+  border: 1px solid black;
   border-radius: 4px;
-  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.15);
-  height: 34px;
-  width: 145px;
-  border: none;
-  background-color: #4d5ae5;
-  transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  padding: 10px;
+  margin-bottom: 20px;
 }
 
-.btn:hover,
-.btn:focus {
-  background-color: #404bbf;
-}
-
-.label {
-  display: flex;
-  flex-direction: column;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.input {
-  margin-top: 4px;
-  margin-bottom: 4px;
+.addBtn {
+  background-color: #e7e7e7;
+  border: 1px solid rgb(99, 99, 99);
+  border-radius: 4px;
   padding: 4px;
-  width: 250px;
-  transition: border-color 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1),
+    border-color 250ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.error {
+.addBtn:hover,
+.addBtn:focus {
+  background-color: #d8d8d8;
+  border-color: black;
+}
+
+.alert {
   font-size: 12px;
   color: red;
 }

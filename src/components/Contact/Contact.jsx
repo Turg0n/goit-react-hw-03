@@ -1,32 +1,25 @@
+import css from './Contact.module.css';
 import { FaUser } from 'react-icons/fa';
 import { FaPhone } from 'react-icons/fa6';
-import css from './Contact.module.css';
 
-const Contact = ({ name, number, id, onDelete, setDeletedId }) => {
+export default function Contact({ contact: { id, name, number }, onDelete }) {
   return (
-    <div className={css.contactItem}>
-      <div className={css.inputsWrapper}>
-        <p className={css.nameText}>
-          <FaUser color="#4d5ae5" /> {name}
+    <div className={css.contactListItemWrapper}>
+      <div>
+        <p className={css.userInfo}>
+          <FaUser size={20} color='#4d5ae5' /> {name}
         </p>
-        <p>
-          <a href={`tel:+${number}`}>
-            <FaPhone color="#4d5ae5" /> {number}
-          </a>
+        <p className={css.userInfo}>
+          <FaPhone size={20} color='#4d5ae5' /> {number}
         </p>
       </div>
       <button
+        className={css.deleteBtn}
         type="button"
-        className={css.btn}
-        onClick={() => {
-          setDeletedId(id);
-          onDelete(id);
-        }}
+        onClick={() => onDelete(id)}
       >
         Delete
       </button>
     </div>
   );
-};
-
-export default Contact;
+}

@@ -1,5 +1,6 @@
-import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { nanoid } from 'nanoid';
+import { useId } from 'react';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import css from './ContactForm.module.css';
 
@@ -7,60 +8,73 @@ const initialValues = {
   name: '',
   number: '',
 };
-
-const FeedbackSchema = Yup.object().shape({
+const ContactPlan = Yup.object().shape({
   name: Yup.string()
-    .min(3, 'Too Short!')
-    .max(50, 'Too Long!')
+    .min(3, 'Too short!')
+    .max(50, 'Too long!')
     .required('Required'),
   number: Yup.string()
-    .min(7, 'Too Short!')
-    .max(12, 'Too Long!')
-    .matches(/^(?!-)[-\d]+(?<!-)$/, 'Wrong format, only digits allowed')
+    .matches(
+      /(?:([+]\d{1,4})[-.\s]?)?(?:[(](\d{1,3})[)][-.\s]?)?(\d{1,4})[-.\s]?(\d{1,4})[-.\s]?(\d{1,9})/g,
+      'Invalid phone number'
+    )
+    .min(3, 'Must be at least 3 characters')
+    .max(50, 'Must be no more than 50 characters')
     .required('Required'),
 });
 
-const ContactForm = ({ addContact }) => {
-  const handleSubmit = (values, actions) => {
-    values.id = nanoid();
-    addContact(values);
-    actions.resetForm();
-  };
+export default function ContactForm({ addContact }) {
+  const nameFieldId = useId();
+  const numberFieldId = useId();
 
+  function handleSubmit(values, actions) {
+    addContact({
+      id: nanoid(),
+      name: values.name,
+      number: values.number,
+    });
+    actions.resetForm();
+  }
+  
   return (
     <Formik
       initialValues={initialValues}
       onSubmit={handleSubmit}
-      validationSchema={FeedbackSchema}
+      validationSchema={ContactPlan}
     >
-      <Form className={css.form}>
-        <label className={css.label}>
-          Name
+      <Form className={css.contactForm}>
+        <div>
+          <label className={css.formLabel} htmlFor={nameFieldId}>
+            Name
+          </label>
           <Field
+            className={css.formField}
             type="text"
             name="name"
-            className={css.input}
-            placeholder="John Doe"
-          ></Field>
-          <ErrorMessage name="name" component="span" className={css.error} />
-        </label>
-        <label className={css.label}>
-          Number
+            id={nameFieldId}
+          />
+          <ErrorMessage className={css.alert} name="name" component="span" />
+        </div>
+        <div>
+          <label className={css.formLabel} htmlFor={numberFieldId}>
+            Number
+          </label>
           <Field
+            className={css.formField}
             type="tel"
             name="number"
-            className={css.input}
-            placeholder="123-45-67"
-          ></Field>
-          <ErrorMessage name="number" component="span" className={css.error} />
-        </label>
-
-        <button type="submit" className={css.btn}>
+            id={numberFieldId}
+          />
+          <ErrorMessage
+            className={css.alert}
+            name="number"
+            component="span"
+          />
+        </div>
+        <button className={css.addBtn} type="submit">
           Add contact
         </button>
       </Form>
     </Formik>
   );
-};
-
-export default ContactForm;
+}
