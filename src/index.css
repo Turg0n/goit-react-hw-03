@@ -8,6 +8,9 @@
 body {
   font-family: sans-serif;
   line-height: 1.5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 h1,
@@ -27,6 +30,11 @@ ol {
   padding: 0;
 }
 
+a {
+  color: currentColor;
+  text-decoration: none;
+}
+
 img {
   display: block;
   max-width: 100%;
@@ -34,4 +42,8 @@ img {
 
 button {
   cursor: pointer;
+}
+
+h1 {
+  text-align: center;
 }

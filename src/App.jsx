@@ -1,64 +1,49 @@
-import { useState } from 'react';
-import { useEffect } from 'react';
-import Description from './components/Description/Description';
-import Options from './components/Options/Options';
-import Feedback from './components/Feedback/Feedback';
-import Notification from './components/Notification/Notification';
-import Bar from './components/Bar/Bar';
+import ContactForm from './components/ContactForm/ContactForm';
+import SearchBar from './components/SearchBox/SearchBox';
+import ContactList from './components/ContactList/ContactList';
+import { useState, useEffect } from 'react';
 
 function App() {
-  const [reviews, setReviews] = useState(() => {
-    const savedReviews = JSON.parse(localStorage.getItem('reviews')) ?? {
-      good: 0,
-      neutral: 0,
-      bad: 0,
-    };
-
-    return savedReviews;
+  const [contacts, setContacts] = useState(() => {
+    const savedContacts = window.localStorage.getItem('contacts');
+    return JSON.parse(savedContacts) ?? [];
   });
+  const [filter, setFilter] = useState('');
+  const [deletedId, setDeletedId] = useState('');
 
   useEffect(() => {
-    localStorage.setItem('reviews', JSON.stringify(reviews));
-  }, [reviews]);
+    window.localStorage.setItem('contacts', JSON.stringify(contacts));
+  }, [contacts]);
 
-  const totalFeedback = Object.values(reviews).reduce((acc, el) => acc + el, 0);
-  const positivePercentage = Math.round(
-    ((reviews.good + reviews.neutral) / totalFeedback) * 100
+  const visibleContacts = contacts.filter(
+    contact =>
+      contact.name.toLowerCase().includes(filter.toLowerCase()) ||
+      contact.number.includes(filter) ||
+      contact.number.split('-').join('').includes(filter)
   );
 
-  const updateFeedback = feedbackType => {
-    setReviews({
-      ...reviews,
-      [feedbackType]: reviews[feedbackType] + 1,
-    });
+  const addContact = newContact => {
+    setContacts(contacts => [...contacts, newContact]);
   };
 
-  const resetFeedback = () => {
-    setReviews({
-      good: 0,
-      neutral: 0,
-      bad: 0,
-    });
+  const deleteContact = contactId => {
+    setTimeout(() => {
+      setContacts(contacts => contacts.filter(el => el.id !== contactId));
+    }, 200);
   };
 
   return (
-    <>
-      <Description />
-      <Options
-        updateFeedback={updateFeedback}
-        resetFeedback={resetFeedback}
-        totalFeedback={totalFeedback}
+    <div>
+      <h1>Phonebook</h1>
+      <ContactForm addContact={addContact} />
+      <SearchBar value={filter} onFilter={setFilter} />
+      <ContactList
+        contacts={visibleContacts}
+        onDelete={deleteContact}
+        deletedId={deletedId}
+        setDeletedId={setDeletedId}
       />
-      {totalFeedback > 0 && (
-        <Feedback
-          reviews={reviews}
-          totalFeedback={totalFeedback}
-          positivePercentage={positivePercentage}
-        />
-      )}
-      {!totalFeedback && <Notification />}
-      {totalFeedback > 0 && <Bar positive={positivePercentage} />}
-    </>
+    </div>
   );
 }
 
